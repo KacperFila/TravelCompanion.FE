@@ -52,7 +52,6 @@ export class AuthService {
   }
 
   login(email: string, password: string) : Observable<any> {
-    console.log("Environment: ", JSON.stringify(environment, null, 2));
     return this.http
       .post<JsonWebToken>(
         `${environment.apiBaseUrl}/users-module/account/sign-in`,
