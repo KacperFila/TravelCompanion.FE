@@ -1,15 +1,25 @@
-FROM node:23.8.0 as build
+# Stage 1: build Angular app
+FROM node:20-alpine AS builder
 
 WORKDIR /app
-
 COPY package*.json ./
-
-RUN npm install
-
 RUN npm install -g @angular/cli
-
+RUN npm install -g ts-node typescript
+RUN npm install
 COPY . .
+RUN npm run build -- --configuration development
 
-EXPOSE 4200
+# Stage 2: serve with Nginx
+FROM nginx:alpine
 
-CMD ["ng", "serve", "--host", "0.0.0.0", "--poll", "2000"]
+# Remove default Nginx static content
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy built Angular app
+COPY --from=builder /app/dist/ui/browser/ /usr/share/nginx/html/
+
+# Copy custom Nginx config (optional, for SPA routing)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

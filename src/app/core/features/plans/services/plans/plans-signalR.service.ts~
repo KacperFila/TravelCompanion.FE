@@ -6,7 +6,6 @@ import { PlansService } from "./plans.service";
 import { User } from "../../../../auth/user.model";
 import { PlanInvitationResponse } from "./plans-signalR-responses.models";
 import { TravelPlan, UpdateRequestUpdateResponse } from "../../models/plan.models";
-import {environment} from "../../../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root',

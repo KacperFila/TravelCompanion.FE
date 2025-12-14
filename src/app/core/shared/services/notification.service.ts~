@@ -4,7 +4,6 @@ import { BehaviorSubject } from "rxjs";
 import { User } from "../../auth/user.model";
 import { AuthService } from "../../auth/auth.service";
 import * as signalR from '@microsoft/signalr';
-import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
