@@ -8,8 +8,9 @@ on:
 env:
   REGISTRY: tcdev-bee7cha6aretd3f5.azurecr.io
   IMAGE_NAME: travelcompanion_fe
-  TAG: latest
+  TAG: ${{ github.sha }}
   AZURE_WEBAPP_NAME: travelcompanion-dev
+  RESOURCE_GROUP: Travelcompanion_dev
 
 jobs:
   build-and-push:
@@ -19,14 +20,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Login to Azure Container Registry
+      - name: Login to ACR
         uses: azure/docker-login@v1
         with:
           login-server: ${{ env.REGISTRY }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Build Angular Docker image
+      - name: Build and push Docker image
         run: |
           docker build --build-arg CONFIGURATION=staging -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
